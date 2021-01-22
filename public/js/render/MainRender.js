@@ -51,7 +51,6 @@ const CANVAS_BACKGROUND_COLOUR = '#000000';
 // Redes Neurais Artificiais
 // const layers = { inputs: 24, hiddens: [14], outputs: 4 };
 const layers = { inputs: 24, hiddens: [10], outputs: 4 };
-// const layers = { inputs: 2, hiddens: [3], outputs: 1 };
 const network = SynapticBrowser(layers, renderScr1.ctx);
 var limitOutputs = [0, 0, 0, 0];
 

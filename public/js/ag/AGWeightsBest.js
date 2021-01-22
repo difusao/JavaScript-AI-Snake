@@ -123,13 +123,12 @@ export default function AGWeights(model) {
 
     function popAjust(pais, filhos) {
         let population = [];
-        let popleft = 0;
         let ajust = [];
+        let popleft = 0;
 
         population.push(pais[0]);
         population = population.concat(filhos);
         popleft = model.popTotal - population.length;
-        ajust = [];
 
         for (let i = 0; i < popleft; i++) {
             let roletaGene = Math.floor(Math.random() * (pais[0].weights.length)) + 0;             // Sorteia em qual gene sofrerá a mutação.
@@ -138,10 +137,10 @@ export default function AGWeights(model) {
             let weights = [];
 
             for (let j = 0; j < pais[0].weights.length - 1; j++) {
-                if (j == roletaGene)
-                    weights.push((getRandomFloat(model.wmin, model.wmax, 1)[0]).toFixed(16));         // Aplica a mutação na população ajustada.
+                if (j == roletaGene)                                                                // Gene sorteado.
+                    weights.push((getRandomFloat(model.wmin, model.wmax, 1)[0]).toFixed(16));       // Aplica a mutação na população ajustada.
                 else
-                    weights.push(pais[0].weights[j]);
+                    weights.push(pais[0].weights[j]);                                               // Pega o melhor resultado da geração anterior.
             }
 
             ajust.push({ id: id, weights: weights, value: value });
