@@ -1,8 +1,9 @@
 ## AI-Snake
 Famous snake game using Neural Networks and Genetic Algorithms.
 
-## Developer 
+## Developer Kit
 - NodeJS
+
 > Dependences
 ```sh
 "dependencies": {
