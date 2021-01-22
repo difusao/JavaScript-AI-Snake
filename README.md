@@ -38,4 +38,4 @@ http://127.0.0.1:3000/
 
 ## Screenshot
 
-![image1.png](https://github.com/difusao/Binary/blob/master/AI-Snake/public/images/image1.png)
+![image1](https://github.com/difusao/Binary/blob/master/AI-Snake/public/images/image1.png)
