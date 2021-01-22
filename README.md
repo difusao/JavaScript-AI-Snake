@@ -1,8 +1,14 @@
 ## AI-Snake
 Famous snake game using Neural Networks and Genetic Algorithms.
 
+## Neural Network
+> Layers
+- Inputs 24 (8 food sensor distances, 8 wall sensor distances, 8 tail sensor distance).
+- Hidden 10.
+- OutPuts (left, up, right, down)
+
 ## Developer Kit
-- NodeJS
+- NodeJS v10.21.0
 
 > Dependencies modules
 ```sh
