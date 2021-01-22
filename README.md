@@ -1,2 +1,8 @@
-# AI-Snake
+## AI-Snake
 AI-Snake
+
+## Developer
+- NodeJS
+- Synaptic
+
+
