@@ -4,7 +4,7 @@ Famous snake game using Neural Networks and Genetic Algorithms.
 ## Developer Kit
 - NodeJS
 
-> Dependences
+> Dependencies modules
 ```sh
 "dependencies": {
     "csvtojson": "^2.0.10",
