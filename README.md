@@ -8,8 +8,12 @@ Famous snake game using Neural Networks and Genetic Algorithms.
 - OutPuts (left, up, right, down)
 
 ## Developer Kit
-- NodeJS v10.21.0
-
+> NodeJS
+- Version
+```sh
+node -v
+v10.21.0
+```
 > Dependencies modules
 ```sh
 "dependencies": {
@@ -28,20 +32,23 @@ Famous snake game using Neural Networks and Genetic Algorithms.
     "gulp-nodemon": "^1.0.4"
   }
 ```
+
 ## Setup
-> In terminal
+> Run in terminal.
 ```sh
 npm i
 ```
 
 ## Run
+> Run in terminal.
 ```sh
 nodemon .\bin\server.js
 ```
 
 ## Show in browser
-http://127.0.0.1:3000/
+> Open in browser.
+`http://127.0.0.1:3000/`
 
 ## Screenshot
-
+> General view.
 ![image1](https://github.com/difusao/AI-Snake/blob/devtools/public/images/image1.png)
