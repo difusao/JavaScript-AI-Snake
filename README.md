@@ -1,8 +1,22 @@
 ## AI-Snake
 Famous snake game using Neural Networks and Genetic Algorithms.
 
+## Neural Network
+> Layers
+- Inputs 24 (8 food sensor distances, 8 wall sensor distances, 8 tail sensor distance).
+- Hidden 10.
+- OutPuts (left, up, right, down)
+
+> Function Activation
+- ReLU
+
 ## Developer Kit
-- NodeJS
+> NodeJS
+- Version
+```sh
+node -v
+v10.21.0
+```
 
 > Dependencies modules
 ```sh
@@ -22,16 +36,23 @@ Famous snake game using Neural Networks and Genetic Algorithms.
     "gulp-nodemon": "^1.0.4"
   }
 ```
+
 ## Setup
-> In terminal
+> Run in terminal.
 ```sh
 npm i
 ```
 
 ## Run
+> Run in terminal.
 ```sh
 nodemon .\bin\server.js
 ```
 
 ## Show in browser
-http://127.0.0.1:3000/
+> Open in browser.
+`http://127.0.0.1:3000/`
+
+## Screenshot
+> General view.
+![image1](https://github.com/difusao/AI-Snake/blob/devtools/public/images/image1.png)
