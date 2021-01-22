@@ -1,5 +1,5 @@
 ## AI-Snake
-AI-Snake
+Famous snake game using Neural Networks and Genetic Algorithms.
 
 ## Developer 
 - NodeJS
