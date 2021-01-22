@@ -17,6 +17,7 @@ Famous snake game using Neural Networks and Genetic Algorithms.
 node -v
 v10.21.0
 ```
+
 > Dependencies modules
 ```sh
 "dependencies": {
