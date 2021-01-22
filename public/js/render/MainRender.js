@@ -44,7 +44,7 @@ let inputs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 let population = [];
 let around = 0;
 
-var GAME_SPEED = 1000 / 144;
+var GAME_SPEED = 1000 / 60;
 const CANVAS_BORDER_COLOUR = '#202020';
 const CANVAS_BACKGROUND_COLOUR = '#000000';
 
@@ -504,8 +504,8 @@ const reset = function () {
   dx = 10;
   dy = 0;
   level = 0;
-  snake = [{ x: 190, y: 300 }, { x: 180, y: 300 }, { x: 170, y: 300 }, { x: 160, y: 300 }, { x: 150, y: 300 }, { x: 140, y: 300 }, { x: 130, y: 300 }, { x: 120, y: 300 }, { x: 110, y: 300 }, { x: 100, y: 300 }];
-  // snake = [{ x: 100, y: 300 }];
+  // snake = [{ x: 190, y: 300 }, { x: 180, y: 300 }, { x: 170, y: 300 }, { x: 160, y: 300 }, { x: 150, y: 300 }, { x: 140, y: 300 }, { x: 130, y: 300 }, { x: 120, y: 300 }, { x: 110, y: 300 }, { x: 100, y: 300 }];
+  snake = [{ x: 100, y: 300 }];
   limitOutputs = [0, 0, 0, 0];
 
   if (pop < model.popTotal && score > 0) {
