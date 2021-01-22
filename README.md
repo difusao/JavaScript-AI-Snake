@@ -7,6 +7,9 @@ Famous snake game using Neural Networks and Genetic Algorithms.
 - Hidden 10.
 - OutPuts (left, up, right, down)
 
+> Function Activation
+- ReLU
+
 ## Developer Kit
 > NodeJS
 - Version
