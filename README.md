@@ -3,9 +3,9 @@ Famous snake game using Neural Networks and Genetic Algorithms.
 
 ## Neural Network
 > Layers
-- Inputs 24 (8 food sensor distances, 8 wall sensor distances, 8 tail sensor distance).
-- Hidden 10.
-- OutPuts (left, up, right, down)
+- Inputs *24* (8 food sensor distances, 8 wall sensor distances, 8 tail sensor distance).
+- Hidden *10*.
+- OutPuts *4* (left, up, right, down)
 
 > Function Activation
 - ReLU
@@ -18,23 +18,13 @@ node -v
 v10.21.0
 ```
 
-> Dependencies modules
+> Dependencies modules `package.json`
 ```sh
 "dependencies": {
-    "csvtojson": "^2.0.10",
-    "express": "^4.8.2",
-    "gulp-cli": "^2.3.0",
+    "express": "^4.17.1",
     "http": "0.0.1-security",
-    "nodemon": "^2.0.6",
-    "socket.io": "^2.3.0",
-    "synaptic": "^1.1.4"
-```
-```sh
-"devDependencies": {
-    "browser-sync": "^1.3.3",
-    "gulp": "^3.8.7",
-    "gulp-nodemon": "^1.0.4"
-  }
+    "nodemon": "^2.0.7"
+}
 ```
 
 ## Setup
@@ -55,4 +45,5 @@ nodemon .\bin\server.js
 
 ## Screenshot
 > General view.
-![image1](https://github.com/difusao/AI-Snake/blob/devtools/public/images/image1.png)
+
+![image1](public/images/image1.png)

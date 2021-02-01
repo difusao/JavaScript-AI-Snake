@@ -19,7 +19,7 @@ export default function RenderScreen(cv) {
 
     function canvasbackground(cvbgcolor, cvfillcolor, x1, y1, x2, y2) {
         this.ctx.beginPath();
-        this.ctx.lineWidth = 1;
+        this.ctx.lineWidth = 10;
         this.ctx.setLineDash([]);
         this.ctx.fillStyle = cvbgcolor;
         this.ctx.strokeStyle = cvfillcolor;
