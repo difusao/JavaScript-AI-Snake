@@ -45,4 +45,5 @@ nodemon .\bin\server.js
 
 ## Screenshot
 > General view.
-![image1](https://github.com/difusao/AI-Snake/blob/devtools/public/images/image1.png)
+
+![image1](public/images/image1.png)
