@@ -1,6 +1,6 @@
 var { Trainer, Architect, Neuron } = synaptic;
 
-export default function SynapticBrowser(layers) {
+export default function SynapticBrowser(layers, ctx) {
     let arrLayer = [];
     arrLayer.push(layers.inputs);
 
@@ -14,34 +14,167 @@ export default function SynapticBrowser(layers) {
 
     var network = new synaptic.Architect.Perceptron(...arrLayer);
     var FuncActiv;
-
+    
     const neurons = network.neurons();
     const trainner = new synaptic.Trainer(network);
     const networkJson = network.toJSON();
 
-    function DrawLayer(draw, ctx) {
-        let nodeSize = draw.nodeSize;
-        let nodeColorInput = draw.nodeColorInput;
-        let nodeColorHidden = draw.nodeColorHidden;
-        let nodeColorOutput = draw.nodeColorOutput;
-        let nodeBorder = draw.nodeBorder;
-        let distNode = draw.distNode;
-        let distNodeHidden = draw.distNodeHidden;
-        let distLayer = draw.distLayer;
-        let posX = draw.posX;
-        let posY = draw.posY;
-        let colorLines = draw.colorLines;
-        let widthInputLines = draw.widthInputLines;
-        let colorHiddenLines = draw.colorHiddenLines;
-        let widthHiddenLines = draw.widthHiddenLines;
-        let colorOutputLines = draw.colorOutputLines;
-        let widthOutputLines = draw.widthOutputLines;
+    function DrawLayer(draw) {
+        let nodeSize = 12;
+        let distNode = 31;
+        let distNodeHidden = 200;
+        let distLayer = 250;
+        let posX = 100;
+        let posY = 25;
         let lastInputX = 0;
         let lastHiddenX = 0;
         let c = 0;
         let c2 = distNodeHidden;
 
-        // -------------------------------------------------
+        // clear
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.setLineDash([]);
+        ctx.fillStyle = draw.bgFillStyle;
+        ctx.strokeStyle = draw.bgStrokeStyle;
+        ctx.fillRect(0, 0, draw.bgWidth, draw.bgHeight);
+        ctx.strokeRect(0, 0, draw.bgWidth, draw.bgHeight);
+        ctx.closePath();
+
+        // Info
+        ctx.beginPath();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "Bold 10px Arial";
+        ctx.textAlign = "left";
+        ctx.fillText("Function: " + FuncActiv, draw.bgWidth - 300, draw.bgHeight - 200);
+        ctx.fillText("Layers: " + layers.inputs + ", " + layers.hiddens + ", " + layers.outputs, draw.bgWidth - 300, draw.bgHeight - 180);
+        ctx.closePath();
+
+        // Inputs
+        for (let i = 0; i < layers.inputs; i++) {
+            ctx.beginPath();
+            ctx.fillStyle = (draw.inputs[i] > 0 ? "#00ff00" : "#000000");
+            ctx.strokeStyle = (draw.inputs[i] > 0 ? "#ffffff" : "#606060");
+            ctx.arc(posX, posY + (i * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.fillStyle = (draw.inputs[i] > 0 ? "#00ff00" : "#606060");
+            ctx.font = "14px Arial";
+            ctx.textAlign = "right";
+            ctx.fillText(draw.inputs[i].toFixed(4), posX - 20, posY + (i * distNode) + nodeSize / 2 - 8);
+            ctx.closePath();
+
+            lastInputX = posX;
+        }
+
+        // Hidden
+        for (let i = 0; i < layers.hiddens.length; i++) {
+            for (let j = 0; j < layers.hiddens[0]; j++) {
+                ctx.beginPath();
+                ctx.fillStyle = "#C0C0C0";
+                ctx.strokeStyle = "#606060";
+                ctx.arc(lastInputX + distLayer + (i * distNodeHidden), posY + (j * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
+                ctx.fill();
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                ctx.closePath();
+
+                lastHiddenX = lastInputX + distLayer + (i * distNodeHidden);
+            }
+        }
+
+        // Outputs
+        for (let i = 0; i < layers.outputs; i++) {
+            ctx.beginPath();
+            // ctx.fillStyle = (draw.inputs[i] > 0.1 ? "#00ff00" : "#000000");
+            // ctx.strokeStyle = (draw.outputs[i] > draw.limitOutput[i] ? "#00ff00" : "#ffffff");
+            ctx.fillStyle = (draw.limitOutput[i] == 1 > 0 ? "#00ff00" : "#000000");
+            ctx.strokeStyle = (draw.limitOutput[i] == 1 > 0 ? "#ffffff" : "#606060");
+            ctx.arc(lastHiddenX + distLayer, posY + (i * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.closePath();
+
+            // if (draw.limitOutput[i] == 1)
+            //     console.log(draw.limitOutput[i]);
+
+            ctx.beginPath();
+            // ctx.fillStyle = (draw.outputs[i] > draw.limitOutput[i] ? "#00ff00" : "#ffffff");
+            ctx.fillStyle = (draw.limitOutput[i] == 1 ? "#00ff00" : "#606060");
+            ctx.font = "20px 'Wingdings 3'";
+            ctx.textAlign = "center";
+            ctx.fillText(draw.outputsSymbol[i], lastHiddenX + distLayer + 30, posY + (i * distNode) + nodeSize / 2);
+            ctx.closePath();
+
+            ctx.beginPath();
+            // ctx.fillStyle = (draw.outputs[i] > draw.limitOutput[i] ? "#00ff00" : "#ffffff");
+            ctx.fillStyle = (draw.limitOutput[i] == 1 ? "#00ff00" : "#606060");
+            ctx.font = "14px Arial";
+            ctx.textAlign = "left";
+            ctx.fillText(draw.outputs[i].toFixed(4), lastHiddenX + distLayer + 50, posY + (i * distNode) + nodeSize / 2);
+            ctx.closePath();
+        }
+
+        // Input lines
+        c = 0;
+        for (let i = 0; i < layers.inputs; i++) {
+            for (let j = 0; j < layers.hiddens[0]; j++) {
+                ctx.beginPath();
+                ctx.strokeStyle = (draw.linesInputs[c] < 0 ? "#ff0000" : "#0000ff");
+                ctx.moveTo(lastInputX + nodeSize + 2, posY + i * distNode);
+                ctx.lineTo(lastInputX + distLayer - nodeSize - 2, posY + (j * distNode));
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+
+                c++;
+            }
+        }
+
+        // Linhas Hidden
+        c = 0;
+        for (let i = 0; i < layers.hiddens.length - 1; i++) {
+            for (let j = 0; j < layers.hiddens[0]; j++) {
+                for (let k = 0; k < layers.hiddens[0]; k++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = (draw.linesHidden[c] < 0 ? "#ff0000" : "#0000ff");
+                    ctx.moveTo(lastInputX + distLayer + (i * distNodeHidden) + nodeSize + 2, posY + (j * distNode));
+                    ctx.lineTo(lastInputX + distLayer + (i * distNodeHidden) + c2 - nodeSize - 2, posY + (k * distNode));
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    c++;
+                }
+            }
+            c2 = c2 + 0;
+        }
+
+        // Linhas Output
+        c = 0;
+        for (let i = 0; i < layers.outputs; i++) {
+            for (let j = 0; j < layers.hiddens[0]; j++) {
+                ctx.beginPath();
+                ctx.strokeStyle = (draw.linesOutputs[c] < 0 ? "#ff0000" : "#0000ff");
+                ctx.moveTo(lastHiddenX + nodeSize + 2, posY + (j * distNode));
+                ctx.lineTo(lastHiddenX + distLayer - nodeSize - 2, posY + (i * distNode));
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+
+                c++;
+            }
+        }
+    }
+
+    function ShowDiagram(params) {
+        let rndInput = [];
+        let rndOutput = [];
 
         let Inputs = layers.inputs;
         let Hiddens = layers.hiddens[0];
@@ -52,7 +185,12 @@ export default function SynapticBrowser(layers) {
 
         let TotalWeightInput = Inputs * Hiddens;
         let TotalWeightHidden = HiddenTotal;
-        // let TotalWeightOutput = Hiddens * Outputs;
+        let TotalWeightOutput = Hiddens * Outputs;
+
+        // setWeights(getRandomFloat(-1, 1, (TotalWeightInput + TotalWeightHidden + TotalWeightOutput)));
+        // rndInput = getRandomFloat(-1, 1, Inputs);
+        // rndOutput = network.activate(rndInput);
+        // rndOutput = network.activate(params.inputs);
 
         let rndWeightIn = [];
         let rndWeightHid = [];
@@ -71,128 +209,28 @@ export default function SynapticBrowser(layers) {
             if (i >= (TotalWeightInput + TotalWeightHidden))
                 rndWeightOut.push(weights[i]);
 
-        // -------------------------------------------------
+        var draw = {
+            inputs: params.inputs,
+            outputs: params.outputs,
+            linesInputs: rndWeightIn,
+            linesHidden: rndWeightHid,
+            linesOutputs: rndWeightOut,
+            limitOutput: params.limitOutput,
+            bgWidth: params.bgWidth,
+            bgHeight: params.bgHeight,
+            bgFillStyle: params.bgFillStyle,
+            bgStrokeStyle: params.bgStrokeStyle,
+            outputsSymbol: ["Å", "Ç", "Æ", "È"]
+        };
 
-        // Inputs
-        for (let i = 0; i < layers.inputs; i++) {
-            ctx.beginPath();
-            ctx.fillStyle = (draw.inputs[i] >= draw.limitInputs[i] ? nodeColorInput[0] : nodeColorInput[1]);
-            ctx.strokeStyle = nodeColorInput[1];
-            ctx.arc(posX, posY + (i * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
-            ctx.fill();
-            ctx.lineWidth = nodeBorder;
-            ctx.stroke();
-            ctx.closePath();
+        /*
+  LEFT_KEY = 37;
+  UP_KEY = 38;
+  RIGHT_KEY = 39;
+  DOWN_KEY = 40;
+  */
 
-            ctx.beginPath();
-            ctx.fillStyle = (draw.inputs[i] >= draw.limitInputs[i] ? nodeColorInput[0] : nodeColorInput[1]);
-            ctx.font = draw.font;
-            ctx.textAlign = "right";
-            ctx.fillText(draw.inputs[i], posX - 110, posY + (i * distNode) - nodeSize / 2);
-            ctx.closePath();
-
-            ctx.beginPath();
-            ctx.fillStyle = (draw.inputs[i] >= draw.limitInputs[i] ? nodeColorInput[0] : nodeColorInput[1]);
-            ctx.font = draw.font;
-            ctx.textAlign = "right";
-            ctx.fillText(draw.inputlabel[i], posX - 20, posY + (i * distNode) - nodeSize / 2);
-            ctx.closePath();
-
-            lastInputX = posX;
-        }
-
-        // Hidden
-        for (let i = 0; i < layers.hiddens.length; i++) {
-            for (let j = 0; j < layers.hiddens[0]; j++) {
-                ctx.beginPath();
-                ctx.fillStyle = nodeColorHidden[0];
-                ctx.strokeStyle = nodeColorHidden[2];
-                ctx.arc(lastInputX + distLayer + (i * distNodeHidden), posY + (j * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
-                ctx.fill();
-                ctx.lineWidth = nodeBorder;
-                ctx.stroke();
-                ctx.closePath();
-
-                lastHiddenX = lastInputX + distLayer + (i * distNodeHidden);
-            }
-        }
-
-        // Outputs
-        for (let i = 0; i < layers.outputs; i++) {
-            ctx.beginPath();
-            ctx.fillStyle = (draw.outputs[i] >= draw.limitOutput[i] ? nodeColorOutput[0] : nodeColorOutput[1]);
-            ctx.strokeStyle = nodeColorOutput[0];
-            ctx.arc(lastHiddenX + distLayer, posY + (i * distNode), nodeSize, 0 * Math.PI, 2.0 * Math.PI, true);
-            ctx.fill();
-            ctx.lineWidth = nodeBorder;
-            ctx.stroke();
-            ctx.closePath();
-
-            ctx.beginPath();
-            ctx.fillStyle = (draw.outputs[i] >= draw.limitOutput[i] ? nodeColorOutput[0] : nodeColorOutput[1]);
-            ctx.font = draw.font;
-            ctx.textAlign = "left";
-            ctx.fillText(draw.outputlabel[i], lastHiddenX + distLayer + 20, posY + (i * distNode) - nodeSize / 2);
-            ctx.closePath();
-
-            ctx.beginPath();
-            ctx.fillStyle = (draw.outputs[i] >= draw.limitOutput[i] ? nodeColorOutput[0] : nodeColorOutput[1]);
-            ctx.font = draw.font;
-            ctx.textAlign = "left";
-            ctx.fillText(draw.outputs[i], lastHiddenX + distLayer + 70, posY + (i * distNode) - nodeSize / 2);
-            ctx.closePath();
-        }
-
-        // Input lines
-        c = 0;
-        for (let i = 0; i < layers.inputs; i++) {
-            for (let j = 0; j < layers.hiddens[0]; j++) {
-                ctx.beginPath();
-                ctx.strokeStyle = (rndWeightIn[c] > 0 ? colorLines[0] : colorLines[1]);
-                ctx.moveTo(lastInputX + nodeSize + 2, posY + i * distNode);
-                ctx.lineTo(lastInputX + distLayer - nodeSize - 2, posY + (j * distNode));
-                ctx.lineWidth = widthInputLines;
-                ctx.stroke();
-                ctx.closePath();
-
-                c++;
-            }
-        }
-
-        // Linhas Hidden
-        c = 0;
-        for (let i = 0; i < layers.hiddens.length - 1; i++) {
-            for (let j = 0; j < layers.hiddens[0]; j++) {
-                for (let k = 0; k < layers.hiddens[0]; k++) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = (rndWeightHid[c] > 0 ? colorHiddenLines[0] : colorHiddenLines[1]);
-                    ctx.moveTo(lastInputX + distLayer + (i * distNodeHidden) + nodeSize + 2, posY + (j * distNode));
-                    ctx.lineTo(lastInputX + distLayer + (i * distNodeHidden) + c2 - nodeSize - 2, posY + (k * distNode));
-                    ctx.lineWidth = widthHiddenLines;
-                    ctx.stroke();
-                    ctx.closePath();
-
-                    c++;
-                }
-            }
-            c2 = c2 + 0;
-        }
-
-        // Linhas Output
-        c = 0;
-        for (let i = 0; i < layers.outputs; i++) {
-            for (let j = 0; j < layers.hiddens[0]; j++) {
-                ctx.beginPath();
-                ctx.strokeStyle = (rndWeightOut[c] > 0 ? colorOutputLines[0] : colorOutputLines[1]);
-                ctx.moveTo(lastHiddenX + nodeSize + 2, posY + (j * distNode));
-                ctx.lineTo(lastHiddenX + distLayer - nodeSize - 2, posY + (i * distNode));
-                ctx.lineWidth = widthOutputLines;
-                ctx.stroke();
-                ctx.closePath();
-
-                c++;
-            }
-        }
+        DrawLayer(draw);
     }
 
     function getRandomFloat(min, max, length) {
@@ -390,7 +428,7 @@ export default function SynapticBrowser(layers) {
             af = Neuron.squash.TANH;
             afText = "TANH";
         }
-
+        
         for (let i = 0; i < neurons.length; i++)
             neurons[i].neuron.squash = af;
 
@@ -493,5 +531,6 @@ export default function SynapticBrowser(layers) {
         DrawLayer,
         TrainnerTest,
         getRandomInt,
+        ShowDiagram,
     };
 }
