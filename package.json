@@ -7,13 +7,16 @@
     "base": "server.js"
   },
   "scripts": {
+    "start": "nodemon bin/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "difusao@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.8.2",
-    "http": "0.0.1-security",
-    "nodemon": "^2.0.6"
+    "express": "4.8.2",
+    "http": "0.0.1-security"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.6"
   }
 }
